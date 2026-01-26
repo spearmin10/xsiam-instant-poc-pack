@@ -198,5 +198,5 @@ $computer_name = "{0:d4}" -f ($ip_index + 1)
   -ComputerDnsServers "172.16.77.240" `
   -LocalUserID $local_user_id `
   -LocalPassword $local_password `
-  -DomainUserID $domain_user_id ^
+  -DomainUserID $domain_user_id `
   -DomainDnsName corp.cortex.lan
