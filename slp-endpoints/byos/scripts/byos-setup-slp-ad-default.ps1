@@ -6,21 +6,18 @@ function ReadPassword (
     if (![string]::IsNullOrEmpty($default)) {
         $message += " (default: $default)"
     }
-    do {
-        $input = (Read-Host $message -AsSecureString)
-        $input = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
-           [Runtime.InteropServices.Marshal]::SecureStringToBSTR(
-               $input
-           )
-        )
-        $input = $input.Trim()
-
-        if ([string]::IsNullOrEmpty($input) -And ![string]::IsNullOrEmpty($default)) {
-            return $default
-        } else {
-            return $input
-        }
-    } while ($true)
+    $input = (Read-Host $message -AsSecureString)
+    $input = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
+       [Runtime.InteropServices.Marshal]::SecureStringToBSTR(
+           $input
+       )
+    )
+    $input = $input.Trim()
+    if ([string]::IsNullOrEmpty($input) -And ![string]::IsNullOrEmpty($default)) {
+        return $default
+    } else {
+        return $input
+    }
 }
 
 $user_id = "lab-user"
