@@ -10,5 +10,5 @@ if errorlevel 1 (
   exit /b 1
 )
 
-powershell -NoProfile -ExecutionPolicy Bypass ".\%SCRIPT_NAME%" -ComputerIP "172.16.77.10"
+powershell -NoProfile -ExecutionPolicy Bypass ".\%SCRIPT_NAME%" -ComputerIP "172.16.77.10" -ApplyDefault
 pause

@@ -10,5 +10,5 @@ if errorlevel 1 (
   exit /b 1
 )
 
-powershell -NoProfile -ExecutionPolicy Bypass ".\%SCRIPT_NAME%"
+powershell -NoProfile -ExecutionPolicy Bypass ".\%SCRIPT_NAME%" -ApplyDefault
 pause
