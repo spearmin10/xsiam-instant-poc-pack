@@ -169,7 +169,7 @@ function FindDomainUserByIndex (
 
 
 $ip_prefix = "172.16.77."
-if (-not $ComputerIP.StartsWith($ip_prefix) {
+if (-not $ComputerIP.StartsWith($ip_prefix)) {
     Write-Host "No users are associated to ${ComputerIP}."
     exit 1
 }
