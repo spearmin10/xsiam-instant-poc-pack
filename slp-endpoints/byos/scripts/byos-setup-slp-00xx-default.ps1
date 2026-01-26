@@ -187,10 +187,10 @@ if ([string]::IsNullOrEmpty($domain_user_id)) {
 }
 
 $local_user_id = "lab-user"
-$local_password = ReadPassword "Input password for ${local_user_id}" "Paloalto1!"
+$local_password = ReadPassword "Enter the password for ${local_user_id}" "Paloalto1!"
 
 $domain_name = "corp.cortex.lan"
-$domain_password = ReadPassword "Input password for ${domain_user_id}@${domain_name}" "Paloalto1!"
+$domain_password = ReadPassword "Enter the password for ${domain_user_id}@${domain_name}" "Paloalto1!"
 $script_name = "byos-setup-slp-00xx.ps1"
 $script_path = DownloadFile "https://github.com/spearmin10/xsiam-instant-poc-pack/blob/main/slp-endpoints/byos/scripts/${script_name}?raw=true" $script_name
 

@@ -3,10 +3,10 @@ Param(
     [parameter(mandatory=$true)][string]$ComputerName,
     [parameter(mandatory=$true)][string[]]$ComputerDnsServers,
     [parameter(mandatory=$true)][string]$LocalUserID,
-    [parameter(mandatory=$true)][string]$LocalUserPassword,
+    [parameter(mandatory=$true)][string]$LocalPassword,
     [parameter(mandatory=$true)][string]$DomainDnsName,
     [parameter(mandatory=$true)][string]$DomainOU,
-    [parameter(mandatory=$true)][string]$DomainUserPassword
+    [parameter(mandatory=$true)][string]$DomainPassword
 )
 
 function SleepForever() {
@@ -162,10 +162,10 @@ class Main {
     [string]$computer_name
     [string[]]$computer_dns_servers
     [string]$local_userid
-    [string]$local_user_password
+    [string]$local_password
     [string]$domain_dns_name
     [string]$domain_ou
-    [string]$domain_user_password
+    [string]$domain_password
 
     Main(
         [Management.Automation.InvocationInfo]$invocation_info,
@@ -177,10 +177,10 @@ class Main {
         $this.computer_name = $cmdline_args["ComputerName"]
         $this.computer_dns_servers = $cmdline_args["ComputerDnsServers"]
         $this.local_userid = $cmdline_args["LocalUserID"]
-        $this.local_user_password = $cmdline_args["LocalUserPassword"]
+        $this.local_password = $cmdline_args["LocalPassword"]
         $this.domain_dns_name = $cmdline_args["DomainDnsName"]
         $this.domain_ou = $cmdline_args["DomainOU"]
-        $this.domain_user_password = $cmdline_args["DomainUserPassword"]
+        $this.domain_password = $cmdline_args["DomainPassword"]
     }
 
     hidden [void] _RegisterAutoSetupTask () {
@@ -209,7 +209,7 @@ class Main {
 
     hidden [void] _ConfigureHostName () {
         if ($env:COMPUTERNAME.ToUpper() -ne $this.computer_name.ToUpper()) {
-            SetAutoLogon $this.local_userid $this.local_user_password ""
+            SetAutoLogon $this.local_userid $this.local_password ""
             $this._RegisterAutoSetupTask()
             Rename-Computer -NewName $this.computer_name -Restart
             SleepForever
@@ -244,7 +244,7 @@ class Main {
 
     hidden [void] _PromoteToDC () {
         if ([string]::IsNullOrEmpty($env:USERDNSDOMAIN)) {
-            SetAutoLogon $this.local_userid $this.local_user_password $this.domain_dns_name
+            SetAutoLogon $this.local_userid $this.local_password $this.domain_dns_name
             $this._RegisterAutoSetupTask()
 
             Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
@@ -255,7 +255,7 @@ class Main {
             Install-ADDSForest -Force `
                 -DomainNetbiosName $short_domain `
                 -DomainName $this.domain_dns_name `
-                -SafeModeAdministratorPassword (ConvertTo-SecureString $this.local_user_password-AsPlainText -Force)
+                -SafeModeAdministratorPassword (ConvertTo-SecureString $this.local_password-AsPlainText -Force)
             SleepForever
         }
     }
@@ -281,7 +281,7 @@ class Main {
                 -EmailAddress "${user_id}@cortex.lan" `
                 -Path "OU=$($this.domain_ou),${dn_suffix}" `
                 -Department "CORTEX" `
-                -AccountPassword (ConvertTo-SecureString $this.domain_user_password -AsPlainText -Force) `
+                -AccountPassword (ConvertTo-SecureString $this.domain_password -AsPlainText -Force) `
                 -PasswordNeverExpires $true `
                 -Enabled $true
         }
