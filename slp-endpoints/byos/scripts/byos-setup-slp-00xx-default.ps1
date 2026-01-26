@@ -174,7 +174,7 @@ if (-not $ComputerIP.StartsWith($ip_prefix)) {
     exit 1
 }
 $ip_index = [int]::Parse($ComputerIP.Substring($ip_prefix.Length)) - 1
-if ($o4 -lt 0) {
+if ($ip_index -lt 0) {
     Write-Host "No users are associated to ${ComputerIP}."
     exit 1
 }
