@@ -1,3 +1,7 @@
+Param(
+    [parameter(mandatory=$true)]
+    [switch]$ApplyDefault
+)
 
 function ReadPassword (
     [string]$message,
@@ -51,10 +55,16 @@ function DownloadFile (
 }
 
 $local_user_id = "lab-user"
-$local_password = ReadPassword "Enter the password for ${local_user_id}" "Paloalto1!"
+$local_password = "Paloalto1!"
+if ($ApplyDefault -ne $true) {
+    $local_password = ReadPassword "Enter the password for ${local_user_id}" $local_password
+}
 
 $domain_name = "corp.cortex.lan"
-$domain_password = ReadPassword "Enter the password to be used for all users in the ${domain_name} domain." "Paloalto1!"
+$domain_password = "Paloalto1!"
+if ($ApplyDefault -ne $true) {
+    $domain_password = ReadPassword "Enter the password to be used for all users in the ${domain_name} domain." $domain_password
+}
 $script_name = "byos-setup-slp-ad.ps1"
 $script_path = DownloadFile "https://github.com/spearmin10/xsiam-instant-poc-pack/blob/main/slp-endpoints/byos/scripts/${script_name}?raw=true" $script_name
 
@@ -67,4 +77,3 @@ $script_path = DownloadFile "https://github.com/spearmin10/xsiam-instant-poc-pac
   -DomainDnsName $domain_password `
   -DomainOU CORTEX `
   -DomainPassword $domain_password
-  

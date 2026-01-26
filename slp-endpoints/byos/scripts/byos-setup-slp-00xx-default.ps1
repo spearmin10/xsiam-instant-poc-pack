@@ -1,5 +1,7 @@
 Param(
-    [parameter(mandatory=$true)][string]$ComputerIP
+    [parameter(mandatory=$true)]
+    [string]$ComputerIP,
+    [switch]$ApplyDefault
 )
 
 function ReadPassword (
@@ -187,10 +189,16 @@ if ([string]::IsNullOrEmpty($domain_user_id)) {
 }
 
 $local_user_id = "lab-user"
-$local_password = ReadPassword "Enter the password for ${local_user_id}" "Paloalto1!"
+$local_password = "Paloalto1!"
+if ($ApplyDefault -ne $true) {
+    $local_password = ReadPassword "Enter the password for ${local_user_id}" $local_password
+}
 
 $domain_name = "corp.cortex.lan"
-$domain_password = ReadPassword "Enter the password for ${domain_user_id}@${domain_name}" "Paloalto1!"
+$domain_password = "Paloalto1!"
+if ($ApplyDefault -ne $true) {
+    $domain_password = ReadPassword "Enter the password for ${domain_user_id}@${domain_name}" $domain_password
+}
 $script_name = "byos-setup-slp-00xx.ps1"
 $script_path = DownloadFile "https://github.com/spearmin10/xsiam-instant-poc-pack/blob/main/slp-endpoints/byos/scripts/${script_name}?raw=true" $script_name
 
