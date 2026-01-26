@@ -74,6 +74,6 @@ $script_path = DownloadFile "https://github.com/spearmin10/xsiam-instant-poc-pac
   -ComputerDnsServers "1.1.1.1,8.8.8.8" `
   -LocalUserID $local_user_id `
   -LocalPassword $local_password `
-  -DomainDnsName $domain_password `
+  -DomainDnsName $domain_name `
   -DomainOU CORTEX `
   -DomainPassword $domain_password
